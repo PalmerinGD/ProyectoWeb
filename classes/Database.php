@@ -12,17 +12,21 @@ class Database {
             die("Connection failed".mysqli_connect_error());
         }
         $result = mysqli_query($mysqli, $query);
-        if(mysqli_num_rows($result) > 0) {
-            $aux = mysqli_fetch_assoc($result);
-            return $aux;
+        $aux = NULL;
+        if($result) {
+            if(mysqli_num_rows($result) > 0) {
+                $aux = mysqli_fetch_assoc($result);
+            }
+            else {
+                $aux = "0 results";
+            }
         }
-        else {
-            return "0 results";
-        }
+
         mysqli_close($mysqli);
+        return $aux;
     }
 
-    public static function encriptar($string) {
+    public static function encrypt($string) {
         return md5($string);
     }
 }
