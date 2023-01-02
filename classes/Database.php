@@ -6,7 +6,7 @@ class Database {
     static $database = 'proyecto_web';
     static $port = '3306';
 
-    public static function query($query) {
+    public static function select($query) {
         $mysqli = mysqli_connect(self::$server, self::$user, self::$password, self::$database, self::$port);
         if(!$mysqli) {
             die("Connection failed".mysqli_connect_error());
@@ -24,6 +24,21 @@ class Database {
 
         mysqli_close($mysqli);
         return $aux;
+    }
+
+    public static function insert($query) {
+        $mysqli = mysqli_connect(self::$server, self::$user, self::$password, self::$database, self::$port);
+        if(!$mysqli) {
+            die("Connection failed".mysqli_connect_error());
+        }
+        $result = mysqli_query($mysqli, $query);
+        if($result) {
+            return "Registro agregado.";
+        }
+        else {
+            return -1;
+        }
+        mysqli_close($mysqli);
     }
 
     public static function encrypt($string) {

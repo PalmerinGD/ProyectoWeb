@@ -3,6 +3,8 @@ require_once('./classes/Route.php');
 require_once('./classes/Response.php');
 require_once('./controllers/Rol.php');
 require_once('./controllers/Login.php');
+require_once('./controllers/Persons.php');
+require_once('./controllers/User.php');
 
 // Establece las rutas que vamos a ocupar.
 
@@ -12,34 +14,30 @@ function verifyAuth() {
 
 Route::set('rol', function() {
     // Verificamos que si esten las cookies.
-    echo $_GET['url'];
     if(!verifyAuth()) {
         Response::sendError('Not login', 401);
+        return;
     }
-    else {
-        // Obtenemos el http method de la request.
-        $request_method = $_SERVER['REQUEST_METHOD'];
+    // Obtenemos el http method de la request.
+    $request_method = $_SERVER['REQUEST_METHOD'];
 
-        if($request_method == 'GET') {
+    if($request_method == 'GET') {
 
-            $res = Rol::getAll();
+        $res = Rol::getAll();
 
-            Response::sendOk($res);
-        }
-
-        else if($request_method == 'POST') {
-
-
-        }
-        else if($request_method == 'DELETE') {
-
-        }
-        else if($request_method == 'PUT') {
-
-        }
+        Response::sendOk($res);
     }
 
+    else if($request_method == 'POST') {
 
+
+    }
+    else if($request_method == 'DELETE') {
+
+    }
+    else if($request_method == 'PUT') {
+
+    }
 });
 
 Route::set('rol/user', function(){
@@ -47,14 +45,44 @@ Route::set('rol/user', function(){
 });
 
 
-Route::set('users', function() {
+Route::set('user', function() {
+    if(!verifyAuth()) {
+        Response::sendError('Not login', 401);
+        return;
+    }
     $request_method = $_SERVER['REQUEST_METHOD'];
     if($request_method == 'POST') {
         $data = json_decode(file_get_contents('php://input'), true);
-        if(User::isset($data['user']) && Person::isset($data['person']) && School::isset($data['school'])) {
+        // Para poder registrar un usuario se necesita
+        // username, password, email, Nombre, Apellido paterno, Apellido materno,
+        // Escuela, rol
 
+        if(!isset($data['user_name']) || !isset($data['user_password']) || !isset($data['user_email']) ||
+           !isset($data['person_name']) || !isset($data['person_surnamep']) || !isset($data['person_surnamem']) || !isset($data['school_id']) || !isset($data['rol_id'])) {
+                Response::sendError('Bad request', 400);
+                return;
+           }
+        
+        $resp = Person::add($data);
+        if($resp == -1) {
+            // Si hubo un error en agregar a la persona
+            Response::sendError('Method not allowed', 405);
+            return;
         }
 
+        // Seleccionamos el id de la persona que apenas agregamos.
+        $last_id = Person::selectId($data);
+
+        if(!isset($last_id['person_id'])) {
+            Response::sendError('Method not allowed', 405);
+            return;
+        }
+
+        $data['person_id'] = (int) $last_id['person_id'];
+        User::add($data);
+        Person::addId_School($data);
+
+        Response::sendOk($resp);
     }
 });
 

@@ -32,7 +32,6 @@ class Route {
         }
         if(!$flag) {
             // Si no se encontro ninguna ruta.
-
             Response::sendError('Route not found', 405);
         }
     }
