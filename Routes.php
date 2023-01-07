@@ -41,8 +41,103 @@ Route::set('rol', function() {
 });
 
 Route::set('rol/user', function(){
-    echo 'ok';
+    
+    //verifica los datos de las cookies
+    if(!verifyAuth())
+    {
+        Response::sendError('Not login', 401);
+        return;
+    }
+
+    //saca el metodo de la url
+    $request_method = $_SERVER['REQUEST_METHOD'];
+
+    //generar lo cookie del rol (login)
+
+    //verifica si el metodo es "GET"
+    if($request_method == 'GET')
+    {
+        //
+        if(!isset($_GET["start"]) || !isset($_GET["limit"]) || !isset($_GET["rol"]))
+        {
+            Response::sendError('Bad request', 400);
+            return;
+        }
+
+        $data = array(
+            "start"=>$_GET["start"],
+            "limit"=>$_GET["limit"],
+            "rol"=>$_GET["rol"]
+        );
+
+        Rol::getRange($data);
+    }
+
+
 });
+
+//buscar con respecto a escuela
+Route::set('schools/users', function(){
+
+     //verifica los datos de las cookies
+     if(!verifyAuth())
+     {
+         Response::sendError('Not login', 401);
+         return;
+     }
+ 
+     //saca el metodo de la url
+     $request_method = $_SERVER['REQUEST_METHOD'];
+ 
+     //generar lo cookie del rol (login)
+ 
+     //verifica si el metodo es "GET"
+     if($request_method == 'GET')
+     {
+        //verificamos si el parámetro se encuentra en la url 
+        if(!isset($_GET["school"]))
+        {
+            Response::sendError('Bad request', 400);
+            return;
+        }
+
+        $data = array(
+            "school"=>$_GET["school"]
+        );
+     }
+
+});
+
+//regresa todas las escuelas con su id
+Route::set('schools', function(){
+     //verifica los datos de las cookies
+     if(!verifyAuth())
+     {
+         Response::sendError('Not login', 401);
+         return;
+     }
+ 
+     //saca el metodo de la url
+     $request_method = $_SERVER['REQUEST_METHOD'];
+ 
+     //verifica si el metodo es "GET"
+     if($request_method == 'GET')
+     {
+         //
+         if(!isset($_GET["schools"]))
+         {
+             Response::sendError('Bad request', 400);
+             return;
+         }
+ 
+         //?schools=total
+         $data = array(
+             "schools"=>$_GET["schools"]
+         );
+         School::getAll();
+    }
+});
+
 
 
 Route::set('user', function() {
