@@ -28,5 +28,22 @@ class Person extends Controller{
         $resp = parent::insert("INSERT INTO person (person_name, person_surnamep, person_surnamem) VALUES ('$person_name', '$person_surnamep', '$person_surnamem')");
         return $resp;
     }
+    
+    //devuelve el total de personas en todas las escuelas
+    public static function totalPersons()
+    {
+        $query = "SELECT count(*) FROM person INNER JOIN user ON person.person_id = user.user_person_id WHERE user.user_rol_id = 1";
+        $resp = parent::select($query);
+        return $resp;
+    }
+    
+    //devuelve el total de personas en una escuela en específico
+    public static function totalPersonsSchool($data)
+    {
+        $school = $data["school"];
+        $query = "SELECT count(*) FROM((person INNER JOIN user ON person.person_id = user.user_person_id) INNER JOIN person_school ON person_school.person_id = person.person_id ) WHERE user.user_rol_id = 1 && person_school.school_id = $school";
+        $resp = parent::select($query);
+        return $resp;
+    }
 }
 ?>
