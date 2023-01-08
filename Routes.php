@@ -184,8 +184,74 @@ Route::set('user', function() {
 Route::set('persons', function() {
 });
 
-Route::set('schools', function(){
+//regresa total de personas 
+Route::set('total/persons', function(){
+
+    //verifica los datos de las cookies
+    if(!verifyAuth())
+    {
+        Response::sendError('Not login', 401);
+        return;
+    }
+
+    //saca el metodo de la url
+    $request_method = $_SERVER['REQUEST_METHOD'];
+
+    //verifica si el metodo es "GET"
+    if($request_method == 'GET')
+    {
+        //
+        if(!isset($_GET["count"]))
+        {
+            Response::sendError('Bad request', 400);
+            return;
+        }
+
+        //?count=total
+        $data = array(
+            "count"=>$_GET["count"]
+        );
+
+        $type = $data["count"];
+
+        Persons::totalPersons();
+
+    }
 });
+
+
+//buscar con respecto a escuela
+Route::set('schools/users', function(){
+
+     //verifica los datos de las cookies
+     if(!verifyAuth())
+     {
+         Response::sendError('Not login', 401);
+         return;
+     }
+ 
+     //saca el metodo de la url
+     $request_method = $_SERVER['REQUEST_METHOD'];
+ 
+     //verifica si el metodo es "GET"
+     if($request_method == 'GET')
+     {
+        //verificamos si el parámetro se encuentra en la url 
+        if(!isset($_GET["schoolPersons"]))
+        {
+            Response::sendError('Bad request', 400);
+            return;
+        }
+
+        $data = array(
+            "schoolPersons"=>$_GET["schoolPersons"];
+        );
+
+        Persons::totalPersonsSchool($data);
+     }
+
+});
+
 
 Route::set('login', function() {
 
