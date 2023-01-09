@@ -45,5 +45,12 @@ class Person extends Controller{
         $resp = parent::select($query);
         return $resp;
     }
+    
+    //busca una persona por su nombre o apellidos
+    public static function searchPerson($data)
+    {
+        $name = $data["name"];
+        $query = "SELECT person.person_name, person.person_surnamep, person.person_surnamem, person_school.school_id, person_presea.presea_id FROM(( `person` INNER JOIN person_school ON person.person_id = person_school.person_id) INNER JOIN person_presea ON person.person_id = person_presea.person_id) WHERE person_name = "$name" || person_surnamep = "$name" || person_surnamem = "$name";"
+    }
 }
 ?>
