@@ -6,9 +6,11 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Spinner";
 import axios from 'axios';
+import { Navigate, useNavigate } from "react-router-dom";
 
 function Login({login, setLogin, show, setShow}) {
 
+    const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [invalid, setInvalid] = useState(false);
@@ -21,11 +23,16 @@ function Login({login, setLogin, show, setShow}) {
             "user_password": password
         })
         .then(res => {
+            console.log(res.data);
             if(res.status === 200) {
-                setLogin(true);
+                setLogin({
+                    user_name: res.data.result.user_name,
+                    user_rol: res.data.result.user_rol_id
+                })
             }
         })
         .catch(err => {
+            console.log(err);
             setInvalid(true)
         })
     }

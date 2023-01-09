@@ -1,6 +1,6 @@
 import { Outlet,Navigate } from "react-router-dom";
-function ProtectedRoute({ login }) {
-    if(login) return <Outlet/>
+function ProtectedRoute(props) {
+    if(props.login && props.admin === props.login.user_rol) return <Outlet/>
     return <Navigate replace to="/"/>
 }
 

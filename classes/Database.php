@@ -12,16 +12,14 @@ class Database {
             die("Connection failed".mysqli_connect_error());
         }
         $result = mysqli_query($mysqli, $query);
-        $aux = NULL;
+        $aux = array();
         if($result) {
-            if(mysqli_num_rows($result) > 0) {
-                $aux = mysqli_fetch_assoc($result);
+            // Obtiene todos los registros que se obtienen con la query
+            while($row = mysqli_fetch_row($result)) {
+                $aux[] = $row;
             }
-            else {
-                $aux = "0 results";
-            }
+            mysqli_free_result($result);
         }
-
         mysqli_close($mysqli);
         return $aux;
     }

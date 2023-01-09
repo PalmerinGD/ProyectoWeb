@@ -1,11 +1,9 @@
 <?php
 require_once('./controllers/Controller.php');
 class School extends Controller{
-  public static function  getAll($data)
+  public static function  getAll()
     {
-        $schools = $data["schools"];
-
-        $query = "SELECT school_name, school_id FROM school";
+        $query = "SELECT school_id, school_name FROM school";
         $resp = parent::select($query);
         return $resp;
     }

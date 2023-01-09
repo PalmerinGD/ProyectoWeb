@@ -5,6 +5,7 @@ require_once('./controllers/Rol.php');
 require_once('./controllers/Login.php');
 require_once('./controllers/Persons.php');
 require_once('./controllers/User.php');
+require_once('./controllers/School.php');
 
 // Establece las rutas que vamos a ocupar.
 
@@ -70,7 +71,8 @@ Route::set('rol/user', function(){
             "rol"=>$_GET["rol"]
         );
 
-        Rol::getRange($data);
+        $res = Rol::getRange($data);
+        Response::sendOk($res);
     }
 
 
@@ -110,31 +112,20 @@ Route::set('schools/users', function(){
 
 //regresa todas las escuelas con su id
 Route::set('schools', function(){
-     //verifica los datos de las cookies
-     if(!verifyAuth())
-     {
-         Response::sendError('Not login', 401);
-         return;
-     }
- 
-     //saca el metodo de la url
-     $request_method = $_SERVER['REQUEST_METHOD'];
- 
-     //verifica si el metodo es "GET"
-     if($request_method == 'GET')
-     {
-         //
-         if(!isset($_GET["schools"]))
-         {
-             Response::sendError('Bad request', 400);
-             return;
-         }
- 
-         //?schools=total
-         $data = array(
-             "schools"=>$_GET["schools"]
-         );
-         School::getAll();
+    //verifica los datos de las cookies
+    if(!verifyAuth())
+    {
+        Response::sendError('Not login', 401);
+        return;
+    }
+
+    //saca el metodo de la url
+    $request_method = $_SERVER['REQUEST_METHOD'];
+
+    //verifica si el metodo es "GET"
+    if($request_method == 'GET') {
+        $res = School::getAll();
+        Response::sendOk($res);
     }
 });
 
@@ -197,27 +188,24 @@ Route::set('login', function() {
         $data = json_decode(file_get_contents('php://input'), true);
 
         if(isset($data['user_name']) && isset($data['user_password'])) {
-
-            // Checamos si el user_name y password son correctas.
+            // Obtenemos el user_name y password.
             $ans = Login::verifyAuth($data);
-            if($ans == -1) {
+            if(count($ans) == 0 || (count($ans) >= 5 && $ans['user_password'] != $data['user_password'])) {
                 // Si no se encontro nada en la base de datos.
+                //echo $ans['user_password'];
+                //echo $data['user_password'];
                 Response::sendError('Username/Password incorrect', 401);
             }
             else {
 
                 // Las cookies tienen una duracion de 1 dia.
-
                 setcookie('user_name', $ans['user_name'],  time() + (86400 * 30));
-
                 setcookie('user_password', $ans['user_password'], + time() + (86400 * 30));
+                setcookie('user_rol', $ans['user_rol_id'], + time() + (86400 * 30));
 
                 Response::sendOk($ans);
             }
-
         }
-
     }
-
 });
 ?>
