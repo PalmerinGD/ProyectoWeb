@@ -244,7 +244,7 @@ Route::set('schools/users', function(){
         }
 
         $data = array(
-            "schoolPersons"=>$_GET["schoolPersons"];
+            "schoolPersons"=>$_GET["schoolPersons"]
         );
 
         Persons::totalPersonsSchool($data);
