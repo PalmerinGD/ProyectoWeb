@@ -182,6 +182,33 @@ Route::set('user', function() {
 });
 
 Route::set('persons', function() {
+    
+    //verifica los datos de las cookies
+    if(!verifyAuth())
+    {
+        Response::sendError('Not login', 401);
+        return;
+    }
+
+    //saca el metodo de la url
+    $request_method = $_SERVER['REQUEST_METHOD'];
+
+    //verifica si el metodo es "GET"
+    if($request_method == 'GET')
+    {
+        //?name=person_name
+        if(!isset($_GET["name"]))
+        {
+            Response::sendError('Bad request', 400);
+            return;
+        }
+
+        $data = array(
+            "name"=>$_GET["name"],
+        );
+
+        Person::searchPerson($data);
+    }
 });
 
 //regresa total de personas 
