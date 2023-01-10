@@ -39,6 +39,22 @@ class Database {
         mysqli_close($mysqli);
     }
 
+    public static function update($query) {
+        $mysqli = mysqli_connect(self::$server, self::$user, self::$password, self::$database, self::$port);
+        if(!$mysqli) {
+            die("Connection failed".mysqli_connect_error());
+        }
+        $result = mysqli_query($mysqli, $query);
+        mysqli_close($mysqli);
+
+        if($result) {
+            return "Registro actualizado";
+        }
+        else {
+            return -1;
+        }
+    }
+
     public static function encrypt($string) {
         return md5($string);
     }

@@ -51,5 +51,33 @@ class Person extends Controller{
         $name = $data["name"];
         $query = "SELECT person.person_name, person.person_surnamep, person.person_surnamem, person_school.school_id, person_presea.presea_id FROM(( `person` INNER JOIN person_school ON person.person_id = person_school.person_id) INNER JOIN person_presea ON person.person_id = person_presea.person_id) WHERE person_name = ".$name."|| person_surnamep = ".$name."|| person_surnampem = ".$name.";";
     }
+
+    public static function getByUserId($data) {
+        $user_id = $data['user_id'];
+        $query = "SELECT person_name, person_surnamep, person_surnamem,person_id FROM (person INNER JOIN user ON person_id = user_person_id) WHERE user_id = $user_id";
+        $res = parent::select($query);
+        $json = array(
+            "person_name" => $res[0][0],
+            "person_surnamep" => $res[0][1],
+            "person_surnamem" => $res[0][2],
+            "person_id" => $res[0][3]
+        );
+        return $json;
+    }
+
+    public static function updatePersonById($data) {
+        $person_name = $data['person_name'];
+        $person_surnamep = $data['person_surnamep'];
+        $person_surnamem = $data['person_surnamem'];
+        $person_id = $data['person_id'];
+        $person_discapacity = $data['person_discapacity'];
+
+        $query = "UPDATE person SET person_name = '$person_name', person_surnamep = '$person_surnamep', person_surnamem = '$person_surnamem', person_discapacity = $person_discapacity WHERE person_id = $person_id";
+
+
+        $res = parent::update($query);
+        echo $res;
+    }
+
 }
 ?>

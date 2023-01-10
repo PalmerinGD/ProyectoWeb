@@ -20,6 +20,7 @@ function App() {
   useEffect(()=>{
     if(Cookies.get('user_name') && Cookies.get('user_password') && Cookies.get('user_rol')) {
       setLogin({
+        user_id: Cookies.get('user_id'),
         user_name: Cookies.get('user_name'),
         user_rol: Cookies.get('user_rol')
       })
@@ -40,7 +41,7 @@ function App() {
           <Route path="/dashboard/*" element={<Dashboard login={login} setLogin={setLogin}/>}/>
         </Route>
         <Route element={<ProtectedRoute admin="2" login={login}/>}>
-          <Route path="/registro/" element={<Register/>}/>
+          <Route path="/registro/" element={<Register login={login}/>}/>
         </Route>
       </Routes> 
     </BrowserRouter>

@@ -27,7 +27,8 @@ function Login({login, setLogin, show, setShow}) {
             if(res.status === 200) {
                 setLogin({
                     user_name: res.data.result.user_name,
-                    user_rol: res.data.result.user_rol_id
+                    user_rol: res.data.result.user_rol_id,
+                    user_id: res.data.result.user_id
                 })
             }
         })

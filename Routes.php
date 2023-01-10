@@ -10,7 +10,7 @@ require_once('./controllers/School.php');
 // Establece las rutas que vamos a ocupar.
 
 function verifyAuth() {
-    return isset($_COOKIE['user_name']) && isset($_COOKIE['user_password']);
+    return isset($_COOKIE['user_name']) && isset($_COOKIE['user_id']);
 }
 
 Route::set('rol', function() {
@@ -170,6 +170,21 @@ Route::set('user', function() {
 
         Response::sendOk($resp);
     }
+    else if($request_method == 'GET') {
+        if(!isset($_GET['user_id'])) {
+            Response::sendError('Bad request', 400);
+            return;
+        }
+        $data = array (
+            "user_id" => $_GET['user_id']
+        );
+        User::getById($data);
+    }
+    else if($request_method == 'PUT') {
+        $data = json_decode(file_get_contents('php://input'), true);
+        Person::updatePersonById($data);
+        User::addEmail($data);
+    }
 });
 
 Route::set('persons', function() {
@@ -187,18 +202,28 @@ Route::set('persons', function() {
     //verifica si el metodo es "GET"
     if($request_method == 'GET')
     {
+        if(isset($_GET['user_id'])) {
+            $data = array (
+                "user_id" => $_GET['user_id']
+            );
+            $ans = Person::getByUserId($data);
+            Response::sendOk($ans);
+        }
         //?name=person_name
-        if(!isset($_GET["name"]))
+        else if(isset($_GET["name"]))
         {
+            $data = array(
+                "name"=>$_GET["name"],
+            );
+
+            Person::searchPerson($data);
+        }
+
+        else {
             Response::sendError('Bad request', 400);
             return;
         }
 
-        $data = array(
-            "name"=>$_GET["name"],
-        );
-
-        Person::searchPerson($data);
     }
 });
 
@@ -262,7 +287,7 @@ Route::set('schools/users', function(){
         }
 
         $data = array(
-            "schoolPersons"=>$_GET["schoolPersons"];
+            "schoolPersons"=>$_GET["schoolPersons"],
         );
 
         Persons::totalPersonsSchool($data);
@@ -293,7 +318,7 @@ Route::set('login', function() {
 
                 // Las cookies tienen una duracion de 1 dia.
                 setcookie('user_name', $ans['user_name'],  time() + (86400 * 30));
-                setcookie('user_password', $ans['user_password'], + time() + (86400 * 30));
+                setcookie('user_id', $ans['user_id'], + time() + (86400 * 30));
                 setcookie('user_rol', $ans['user_rol_id'], + time() + (86400 * 30));
 
                 Response::sendOk($ans);

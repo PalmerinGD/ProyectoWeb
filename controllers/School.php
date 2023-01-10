@@ -5,7 +5,15 @@ class School extends Controller{
     {
         $query = "SELECT school_id, school_name FROM school";
         $resp = parent::select($query);
-        return $resp;
+        $json = array();
+
+        foreach($resp as $row) {
+          $json[] = array(
+            "school_id" => (int)$row[0],
+            "school_name" => $row[1],
+          );
+        }
+        return $json;
     }
 }
 ?>
