@@ -10,7 +10,7 @@ class Rol extends Controller{
         //si es admin: nombre completo, email, boleto, escuela, status
         //checar los users que tengan el rol indicado
         $query = "SELECT person.person_name, person.person_surnamep, person.person_surnamem, user.user_email, person_presea.presea_id, user.user_id FROM ((person INNER JOIN user ON user.user_person_id = person.person_id) INNER JOIN person_presea ON person_presea.person_id = person.person_id) WHERE user.user_rol_id = $user_rol LIMIT $start, $limit";
-        //echo $query;
+    echo $query;
         $resp = parent::select($query);
         $json = array();
         foreach($resp as $row) {

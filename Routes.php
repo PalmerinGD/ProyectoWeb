@@ -295,6 +295,13 @@ Route::set('schools/users', function(){
 
 });
 
+Route::set('pdf', function() {
+    $file = 'file.PDF';
+        header('Content-type: application/pdf');
+        header('Content-Disposition: attachment; filename="'. basename($file) . '"');
+        header('Content-Length: ' . filesize($file));
+        readfile($file);
+});
 
 Route::set('login', function() {
 

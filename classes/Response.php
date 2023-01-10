@@ -14,5 +14,11 @@ class Response {
         http_response_code(200);
     }
 
+    public static function sendFile($file = '../file.PDF') {
+        header('Content-Disposition: attachment; filename="'. basename($file) . '"');
+        header('Content-Length: ' . filesize($file));
+        readfile($file);
+    }
+
 }
 ?>
