@@ -58,6 +58,7 @@ Route::set('rol/user', function(){
     //verifica si el metodo es "GET"
     if($request_method == 'GET')
     {
+        /*
         //
         if(!isset($_GET["start"]) || !isset($_GET["limit"]) || !isset($_GET["rol"]))
         {
@@ -72,6 +73,10 @@ Route::set('rol/user', function(){
         );
 
         $res = Rol::getRange($data);
+        Response::sendOk($res);
+        */
+
+        $res = Rol::getAllUsers();
         Response::sendOk($res);
     }
 

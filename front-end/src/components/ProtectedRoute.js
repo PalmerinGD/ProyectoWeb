@@ -1,7 +1,9 @@
-import { Outlet,Navigate } from "react-router-dom";
-function ProtectedRoute(props) {
-    if(props.login && props.admin === props.login.user_rol) return <Outlet/>
+import { Outlet, Navigate } from "react-router-dom";
+function ProtectedRoute({token}) {
+    console.log(token);
+    if(token) return <Outlet/>
     return <Navigate replace to="/"/>
+   //return <Outlet/>
 }
 
 export default ProtectedRoute;

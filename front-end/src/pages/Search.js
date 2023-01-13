@@ -27,8 +27,8 @@ function Search() {
             const aux = [{id:-1, name:''}];
             for(const s of res.data.result) {
                 aux.push({
-                    id: s[0],
-                    name: s[1]
+                    id: s.school_id,
+                    name: s.school_name
                 })
             }
             setSchools(aux)
@@ -36,11 +36,11 @@ function Search() {
         })
     },[])
 
-    let offset = 0;
     const handleSubmit = (e) => {
         e.preventDefault()
         axios.get('rol/user?start=0&limit=2&rol=2')
         .then(res => {
+            console.log(res);
             setResults(res.data.result)
         })
     }
@@ -74,7 +74,7 @@ function Search() {
                             <Form.Label>Escuela</Form.Label>
                             <Form.Select defaultValue="...Choose" onChange={(e)=>setEscuela(e.target.value)}>
                                 {schools.map(school => 
-                                    <option key={school.name}>{school.name}</option>
+                                    <option key={school.id}>{school.name}</option>
                                 )}
                             </Form.Select>
                         </Form.Group>

@@ -1,16 +1,16 @@
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/esm/Container";
-import Carrusel from "./Carrusel";
+import Carousel from "./Carousel/Carousel";
 import Card from "react-bootstrap/Card";
-import Footer from "./Footer";
+import Footer from "../Footer/Footer";
 
 function Main() {
     return (
         <Container fluid>
-            <Row style={{backgroundColor:'black'}}>
-                <Col>
-                    <Carrusel/>
+            <Row>
+                <Col className="p-0">
+                    <Carousel/>
                 </Col>
             </Row>
             <Row className="mb-3">

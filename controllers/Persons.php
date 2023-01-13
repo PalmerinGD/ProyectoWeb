@@ -54,13 +54,14 @@ class Person extends Controller{
 
     public static function getByUserId($data) {
         $user_id = $data['user_id'];
-        $query = "SELECT person_name, person_surnamep, person_surnamem,person_id FROM (person INNER JOIN user ON person_id = user_person_id) WHERE user_id = $user_id";
+        $query = "SELECT person_name, person_surnamep, person_surnamem,person_id,user_email  FROM (person INNER JOIN user ON person_id = user_person_id) WHERE user_id = $user_id";
         $res = parent::select($query);
         $json = array(
             "person_name" => $res[0][0],
             "person_surnamep" => $res[0][1],
             "person_surnamem" => $res[0][2],
-            "person_id" => $res[0][3]
+            "person_id" => $res[0][3],
+            "user_email" => $res[0][4]
         );
         return $json;
     }

@@ -1,12 +1,17 @@
-import Header from "../components/Header";
-import Navigation from "../components/Navigation";
-import Main from "../components/Main";
-import Footer from "../components/Footer";
+
+// Componentes
+import Header from "../components/Header/Header";
+import Navbar from "../components/Navbar/Navbar";
+import Main from "../components/Main/Main";
+import Footer from "../components/Footer/Footer";
+
+
+// Bootstrap componentes
 import Container from "react-bootstrap/esm/Container";
 import Col from "react-bootstrap/esm/Col";
 import Row from "react-bootstrap/esm/Row";
 
-function Home({login, setLogin}) {
+function Home({token , setToken}) {
 
     return (
         <Container className="p-0 overflow-hidden" fluid>
@@ -17,7 +22,7 @@ function Home({login, setLogin}) {
             </Row>
             <Row>
                 <Col>
-                    <Navigation login={login} setLogin={setLogin} />
+                    <Navbar token={token} setToken={setToken} />
                 </Col>
             </Row>
             <Row>

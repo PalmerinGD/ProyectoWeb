@@ -5,7 +5,7 @@ class Login extends Controller {
         $user_name = $data['user_name'];
         $res = parent::select("SELECT * FROM user WHERE user_name='$user_name'");
         $json = array();
-        if(count($res[0]) >= 5) {
+        if(count($res) == 1 && count($res[0]) >= 5) {
             $json['user_id'] = $res[0][0];
             $json['user_name'] = $res[0][1];
             $json['user_password'] = $res[0][2];
