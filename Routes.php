@@ -306,6 +306,39 @@ Route::set('pdf', function() {
         header('Content-Disposition: attachment; filename="'. basename($file) . '"');
         header('Content-Length: ' . filesize($file));
         readfile($file);
+    
+    //generacion de archivo pdf
+Route::set('generatePDF', function(){
+
+    //verifica los datos de las cookies
+    if(!verifyAuth())
+    {
+        Response::sendError('Not login', 401);
+        return;
+    }
+
+    //saca el metodo de la url
+    $request_method = $_SERVER['REQUEST_METHOD'];
+
+    //verifica si el metodo es "GET"
+    if($request_method == 'GET')
+    {
+       //verificamos si el parámetro se encuentra en la url 
+       if(!isset($_GET["personPDF"]))
+       {
+           Response::sendError('Bad request', 400);
+           return;
+       }
+
+       $data = array(
+           "personPDF"=>$_GET["personPDF"]
+       );
+        
+       Pdfgen::genPDF($data);
+       //Pdfgen::ppdf();
+    }
+
+});
 });
 
 Route::set('login', function() {
