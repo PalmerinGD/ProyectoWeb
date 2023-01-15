@@ -12,6 +12,7 @@ import Container from 'react-bootstrap/Container';
 import  Nav  from 'react-bootstrap/Nav';
 import Cookies from 'js-cookie';
 
+import { GoSignOut } from "react-icons/go";
 function Navbar({token, setToken}) {
 
     // Determina si se muestra la navbar dependiendo del size.
@@ -38,7 +39,7 @@ function Navbar({token, setToken}) {
                         
                             <Button onClick={() => setShow(true)}>Login</Button>
                             <Login token={token} setToken={setToken} show={show} setShow={setShow} />
-                        </> : <><Button onClick={() => handleLogout()}>Logout</Button></>}
+                        </> : <><Button variant="danger" onClick={() => handleLogout()}>Logout <GoSignOut/> </Button></>}
                     </Nav>
                 </NavbarB.Collapse>
             </Container>

@@ -6,7 +6,7 @@ import Logo from '../Navbar/Logo'
 
 function Footer() {
     return (
-        <Container fluid bg="light" className="p-5">
+        <Container fluid className="p-5 bg-light">
             <Row>
                 <Col xl={3} lg={4} sm={12} className="mx-5">
                     <Logo/> 

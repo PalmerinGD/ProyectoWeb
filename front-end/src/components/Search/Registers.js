@@ -1,46 +1,106 @@
 import React, { useEffect, useState } from 'react'
+import Container from 'react-bootstrap/esm/Container'
+import Row from 'react-bootstrap/esm/Row'
+import Col from 'react-bootstrap/esm/Col'
 import Table from 'react-bootstrap/Table'
 
-function Registers({registers, start}) {
-
-  /*
-  const [showedRegisters, setShowedRegisters] = useState(() => {
-    let aux = []
-    for(let i=0; i<1 && i < registers.length; i++) {
-      console.log(registers[i]);
-      aux.push(registers[i])
-    }
-    return aux;
-  })
-  console.log(showedRegisters);
-  */
+const registersx = [
+  {
+    person_name: 'Diego',
+    person_surnamep: 'Palmerin',
+    person_surnamem: 'Garcia'
+  },
+  {
+    person_name: 'Diego',
+    person_surnamep: 'Palmerin',
+    person_surnamem: 'Garcia'
+  },
+  {
+    person_name: 'Diego',
+    person_surnamep: 'Palmerin',
+    person_surnamem: 'Garcia'
+  },
+  {
+    person_name: 'Diego',
+    person_surnamep: 'Palmerin',
+    person_surnamem: 'Garcia'
+  },
+  {
+    person_name: 'Diego',
+    person_surnamep: 'Palmerin',
+    person_surnamem: 'Garcia'
+  },
+  {
+    person_name: 'Diego',
+    person_surnamep: 'Palmerin',
+    person_surnamem: 'Garcia'
+  },
+  {
+    person_name: 'Diego',
+    person_surnamep: 'Palmerin',
+    person_surnamem: 'Garcia'
+  },
+  {
+    person_name: 'Diego',
+    person_surnamep: 'Palmerin',
+    person_surnamem: 'Garcia'
+  },
+  {
+    person_name: 'Diego',
+    person_surnamep: 'Palmerin',
+    person_surnamem: 'Garcia'
+  },
+  {
+    person_name: 'Diego',
+    person_surnamep: 'Palmerin',
+    person_surnamem: 'Garcia'
+  },
+  {
+    person_name: 'Diego',
+    person_surnamep: 'Palmerin',
+    person_surnamem: 'Garcia'
+  },
+  {
+    person_name: 'Diego',
+    person_surnamep: 'Palmerin',
+    person_surnamem: 'Garcia'
+  },
+]
+function Registers({registers, start, setEntity}) {
 
 
   return (
-    <Table hover bordered>
-      <thead>
-        <tr className='text-center'>
-          <th>Nombre</th>
-          <th>Apellido Paterno</th>
-          <th>Apellido Materno</th>
-        </tr>
-      </thead>
-      <tbody>
-        {registers.map((r,i) => {
-          if(i >= start && i < start + 2)
-            return (
-              <tr key={i}>
-                <td>{r.person_name}</td>
-                <td>{r.person_surnamep}</td>
-                <td>{r.person_surnamem}</td>
+    <Container fluid className='bg-light'>
+      <Row>
+        <Col className="p-0 tableContainer">
+          <Table hover bordered className='bg-light table'>
+            <thead className='th'>
+              <tr className='text-center'>
+                <th className='bg-light'>Nombre</th>
+                <th className='bg-light'>Apellido Paterno</th>
+                <th className='bg-light'>Apellido Materno</th>
               </tr>
-            )
-          else return null
-        })}
+            </thead>
+            <tbody>
+              {registersx.map((r, i) => {
+                if (i >= start)
+                  return (
+                    <tr key={i} onClick={() => setEntity(r)}>
+                      <td>{r.person_name}</td>
+                      <td>{r.person_surnamep}</td>
+                      <td>{r.person_surnamem}</td>
+                    </tr>
+                  )
+                else return null
+              })}
 
-      </tbody>
+            </tbody>
 
-    </Table>
+          </Table>
+        </Col>
+      </Row>
+
+    </Container>
   )
 }
 

@@ -3,17 +3,19 @@ import Container from 'react-bootstrap/esm/Container'
 import Row from 'react-bootstrap/esm/Row'
 import Col from 'react-bootstrap/esm/Col'
 import Form from 'react-bootstrap/Form'
-import Rol from './Rol'
-import Schools from './Schools'
+import Rol from '../Rol/Rol'
+import Schools from '../School/Schools'
 import Button from 'react-bootstrap/esm/Button'
 import Registers from './Registers'
 import axios from 'axios'
 
 
 import Pagination from './Pagination'
+import Modal from './Modal'
 import {FaSearch} from 'react-icons/fa'
+import { GoSearch } from "react-icons/go";
 
-function Search() {
+function Search({schools}) {
 
     const [nombre, setNombre] = useState('')
     const [apellidoMaterno, setApellidoMaterno] = useState('')
@@ -23,6 +25,8 @@ function Search() {
 
     const [registers, setRegisters] = useState([])
     const [start, setStart] = useState(0)
+
+    const [entity, setEntity] = useState(null)
     const handleSearch = (e) => {
         e.preventDefault()
         if(school) {
@@ -34,7 +38,7 @@ function Search() {
         })
     }
   return (
-    <Container className='mt-5'>
+    <Container className='mt-5 mb-5'>
         <Row>
             <Col className='text-center'>
                 <h3>
@@ -42,16 +46,16 @@ function Search() {
                 </h3>
             </Col>
         </Row>
-        <Row>
+        <Row className='mt-2'>
             <Form onSubmit={(e) => handleSearch(e)}>
                 <Row>
-                    <Col>
+                    <Col md={12} lg={4}>
                         <Form.Group>
                             <Form.Label>Nombre</Form.Label>     
                             <Form.Control  type="text" value={nombre} onChange={(e) => setNombre(e.target.value)}/>
                         </Form.Group> 
                     </Col>
-                    <Col>
+                    <Col md={12} lg={4}>
                         <Form.Group>
                             <Form.Label>Apellido Paterno</Form.Label>     
                             <Form.Control  type="text" value={apellidoPaterno} onChange={(e) => setApellidoPaterno(e.target.value)}/>
@@ -64,24 +68,26 @@ function Search() {
                         </Form.Group> 
                     </Col>
                 </Row>
-                <Row>
-                    <Col>
+                <Row className='mt-2'>
+                    <Col md={12} lg={6}>
                         <Rol setRol={setRol}/>
                     </Col>
                     <Col>
-                        <Schools setSchool={setSchool}/>
+                        <Schools schools={schools} setSchool={setSchool}/>
                     </Col>
                 </Row>
-                <Row>
-                    <Col>
-                        <Button type="submit">Buscar</Button> 
+                <Row className='mt-2'>
+                    <Col className='d-flex justify-content-end'>
+                        <Button type="submit" className='m-2'>Buscar <GoSearch/></Button>
+                        <Button className='m-2' variant='secondary'>Limpiar</Button>
                     </Col>
                 </Row>
             </Form>
         </Row>
-        <Row>
+        <Row className='mt-2'>
             <Col>
-                <Registers registers={registers} start={start}/>
+                <Registers registers={registers} start={start} setEntity={setEntity}/>
+                <Modal entity={entity} setEntity={setEntity}/>
             </Col>
         </Row>
         <Row>

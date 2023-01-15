@@ -15,3 +15,25 @@ code {
 .ipn-color-bg {
     background-color: #720638;
 }
+
+.min-h-600 {
+  min-height: 600px;
+}
+
+.min-h-400 {
+  min-height: 400px;
+}
+
+.tableContainer {
+    height: 400px;
+    overflow-y: auto;
+}
+
+.th {
+  position: sticky;
+  top:0;
+}
+
+.table {
+  width: 100%;
+}

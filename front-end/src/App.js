@@ -48,11 +48,6 @@ function App() {
     <Container fluid className='overflow-hidden p-0'>
         <Row>
             <Col>
-                <Header/>
-            </Col>
-        </Row>
-        <Row>
-            <Col>
                 <Navbar token={token} setToken={setToken}/> 
             </Col>
         </Row>
