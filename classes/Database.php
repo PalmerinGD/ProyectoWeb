@@ -18,6 +18,7 @@ class Database {
             while($row = mysqli_fetch_row($result)) {
                 $aux[] = $row;
             }
+            return $aux;
             mysqli_free_result($result);
         }
         mysqli_close($mysqli);

@@ -37,48 +37,42 @@ class Pdfgen extends Controller
     public static function genPDF($data)
     {
         $person_id = $data['person_id'];
-        $query = "SELECT person.person_name, person.person_surnamep, person.person_surnamem, presea.presea_name, school.school_name, person.person_discapatacy, person_id FROM ((((person INNER JOIN person_presea ON person_presea.person_id = person.person_id) INNER JOIN person_school ON person_school.person_id = person.person_id) INNER JOIN school on person.person_id = person_school.person_id) INNER JOIN presea on presea.presea_id = person_presea.presea_id )WHERE person.person_id = 100";
+        //$query = "SELECT person.person_name, person.person_surnamep, person.person_surnamem, presea.presea_name, school.school_name, person.person_discapatacy FROM ((((person INNER JOIN person_presea ON person_presea.person_id = person.person_id) INNER JOIN person_school ON person_school.person_id = person.person_id) INNER JOIN school on person.person_id = person_school.person_id) INNER JOIN presea on presea.presea_id = person_presea.presea_id )WHERE person.person_id = $person_id";
+        $query = "SELECT person.person_id,person.person_name, person.person_surnamep, person.person_surnamem, person.person_discapacity,  presea.presea_name, school.school_name FROM ((((person INNER JOIN person_presea ON person_presea.person_id = person.person_id)
+INNER JOIN presea on person_presea.presea_id = presea.presea_id) INNER JOIN person_school ON person_school.person_id = person.person_id) INNER JOIN school on school.school_id = person_school.school_id) where person.person_id=$person_id";
         $resp = parent::select($query);
         
         $json = array();
+        //print_r($resp);
         foreach($resp as $row) {
             $json[] = array(
-                "person_name" => $row[0],
-                "person_surnamep" => $row[1],
-                "person_surnamem" => $row[2],
-                "presea_name" => $row[3],
-                "school_name" => $row[4],
-                "person_disc" => $row[5],
-                "person_id" => $row[6]
+                "person_id" => $row[0],
+                "person_name" => $row[1],
+                "person_surnamep" => $row[2],
+                "person_surnamem" => $row[3],
+                "person_disc" => $row[4],
+                "presea_name" => $row[5],
+                "school_name" => $row[6],
             );
         }
 
         $person_name = $json[0]['person_name'];
         $person_surnamep = $json[0]['person_surnamep'];
         $person_surnamem = $json[0]['person_surnamem'];
-        $person_name = $json[0]['person_name']; 
         $person_school = $json[0]['school_name'];
         $person_presea = $json[0]['presea_name'];
         $person_disc = $json[0]['person_disc'];
-        $person_id = $json[0]['person_id'];
-        print_r($person_name);
-
 
         $pdf = new PDF();
         $pdf->AddPage();
-        $pdf->Cell(40,60, "Nombre:".$person_name." ".$person_surnamep." ".$person_surname);
-        $save = $pdf->Output();
+        $pdf->Cell(40,60, "Nombre:".$person_name." ".$person_surnamep." ".$person_surnamem);
+        //$save = $pdf->Output();
+        $save = $pdf->Output('archivo.pdf', 'I');
         //insertamos el doc generado en la database (en revision)
-        //$insertQuery = "INSERT INTO person (person_ticket) VALUES ('".addslashes($save)."') WHERE person_id = $person_id";
+        $insertQuery = "INSERT INTO person (person_ticket) VALUES ('$save') WHERE person_id = $person_id";
+        //echo $insertQuery;
+        parent::insert($insertQuery);
         
-        //si la persona llevará invitado se genera un ticket extra
-        if($person_disc == 1)
-        {
-            $pdf->AddPage();
-            $pdf->Cell(40,60, "Nombre:".$person_name." ".$person_surnamep." ".$person_surname);
-        }
-        
-        $pdf->Output();
 
         
 

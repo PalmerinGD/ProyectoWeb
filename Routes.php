@@ -6,6 +6,7 @@ require_once('./controllers/Login.php');
 require_once('./controllers/Persons.php');
 require_once('./controllers/User.php');
 require_once('./controllers/School.php');
+require_once('./controllers/Pdfgen.php');
 
 // Establece las rutas que vamos a ocupar.
 
@@ -308,6 +309,7 @@ Route::set('pdf', function() {
         readfile($file);
     
     //generacion de archivo pdf
+});
 Route::set('generatePDF', function(){
 
     //verifica los datos de las cookies
@@ -324,21 +326,16 @@ Route::set('generatePDF', function(){
     if($request_method == 'GET')
     {
        //verificamos si el parámetro se encuentra en la url 
-       if(!isset($_GET["personPDF"]))
+       if(!isset($_GET["person_id"]))
        {
            Response::sendError('Bad request', 400);
            return;
        }
 
-       $data = array(
-           "personPDF"=>$_GET["personPDF"]
-       );
-        
-       Pdfgen::genPDF($data);
+       Pdfgen::genPDF($_GET);
        //Pdfgen::ppdf();
     }
 
-});
 });
 
 Route::set('login', function() {

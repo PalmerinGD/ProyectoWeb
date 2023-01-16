@@ -21,6 +21,7 @@ import React from 'react'
 import Container from 'react-bootstrap/Container'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
+import Datos from "./components/Datos/Datos";
 
 function App() {
 
@@ -54,11 +55,12 @@ function App() {
         <Row>
             <Col>
               <Routes>
-                <Route path="/" element={token ? <Navigate replace to="/dashboard"/> : <Main />}/>
+                <Route path="/" element={token ? <Navigate replace to="/datos"/> : <Main />}/>
                 <Route element={<ProtectedRoute token={token}/>}>
                   <Route path="/dashboard/" element={<Dashboard/>} />
                 </Route>
                 <Route element={<ProtectedRoute token={token}/>}>
+                  <Route path="/datos/" element={<Datos/>}/>
                 </Route>
               </Routes>
             </Col>
