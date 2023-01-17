@@ -149,6 +149,8 @@ Route::set('user', function() {
         // username, password, email, Nombre, Apellido paterno, Apellido materno,
         // Escuela, rol
 
+        Person::updatePersonById($data);
+        /*
         if(!isset($data['user_name']) || !isset($data['user_password']) || !isset($data['user_email']) ||
            !isset($data['person_name']) || !isset($data['person_surnamep']) || !isset($data['person_surnamem']) || !isset($data['school_id']) || !isset($data['rol_id'])) {
                 Response::sendError('Bad request', 400);
@@ -173,8 +175,9 @@ Route::set('user', function() {
         $data['person_id'] = (int) $last_id['person_id'];
         User::add($data);
         Person::addId_School($data);
+        */
 
-        Response::sendOk($resp);
+        //Response::sendOk($resp);
     }
     else if($request_method == 'GET') {
         if(!isset($_GET['user_id'])) {

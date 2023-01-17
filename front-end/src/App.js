@@ -30,7 +30,7 @@ function App() {
   useEffect(()=>{
     if(Cookies.get('user_name') && Cookies.get('user_id') && Cookies.get('user_rol')) {
       setToken({
-        user_id: Cookies.get('user_id'),
+        user_id: Number(Cookies.get('user_id')),
         user_name: Cookies.get('user_name'),
         user_rol: Cookies.get('user_rol')
       })
@@ -60,7 +60,7 @@ function App() {
                   <Route path="/dashboard/" element={<Dashboard/>} />
                 </Route>
                 <Route element={<ProtectedRoute token={token}/>}>
-                  <Route path="/datos/" element={<Datos/>}/>
+                  <Route path="/datos/" element={<Datos token={token}/>}/>
                 </Route>
               </Routes>
             </Col>

@@ -35,7 +35,7 @@ class Database {
             return "Registro agregado.";
         }
         else {
-            return -1;
+            return mysqli_error($mysqli);
         }
         mysqli_close($mysqli);
     }
@@ -46,7 +46,6 @@ class Database {
             die("Connection failed".mysqli_connect_error());
         }
         $result = mysqli_query($mysqli, $query);
-        mysqli_close($mysqli);
 
         if($result) {
             return "Registro actualizado";
@@ -54,6 +53,7 @@ class Database {
         else {
             return -1;
         }
+        mysqli_close($mysqli);
     }
 
     public static function encrypt($string) {

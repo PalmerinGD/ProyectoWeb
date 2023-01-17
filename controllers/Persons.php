@@ -67,17 +67,18 @@ class Person extends Controller{
     }
 
     public static function updatePersonById($data) {
+        $person_id = $data['person_id'];
         $person_name = $data['person_name'];
         $person_surnamep = $data['person_surnamep'];
         $person_surnamem = $data['person_surnamem'];
-        $person_id = $data['person_id'];
-        $person_discapacity = $data['person_discapacity'];
+        $person_discapacity = (int)$data['person_discapacity'];
+        $person_numero_invitados = (int)$data['person_numero_invitados'];
 
-        $query = "UPDATE person SET person_name = '$person_name', person_surnamep = '$person_surnamep', person_surnamem = '$person_surnamem', person_discapacity = $person_discapacity WHERE person_id = $person_id";
+        $query = "UPDATE person SET person_name = '$person_name', person_surnamep = '$person_surnamep', person_surnamem = '$person_surnamem', person_discapacity = $person_discapacity, person_numero_invitados = $person_numero_invitados WHERE person_id = $person_id";
 
-
-        $res = parent::update($query);
-        echo $res;
+        echo $query;
+        //$res = parent::update($query);
+        //echo $res;
     }
 
 }

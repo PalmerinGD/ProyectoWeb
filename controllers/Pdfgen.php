@@ -43,6 +43,7 @@ INNER JOIN presea on person_presea.presea_id = presea.presea_id) INNER JOIN pers
         $resp = parent::select($query);
         
         $json = array();
+        //echo $query;
         //print_r($resp);
         foreach($resp as $row) {
             $json[] = array(
@@ -66,12 +67,7 @@ INNER JOIN presea on person_presea.presea_id = presea.presea_id) INNER JOIN pers
         $pdf = new PDF();
         $pdf->AddPage();
         $pdf->Cell(40,60, "Nombre:".$person_name." ".$person_surnamep." ".$person_surnamem);
-        //$save = $pdf->Output();
-        $save = $pdf->Output('archivo.pdf', 'I');
-        //insertamos el doc generado en la database (en revision)
-        $insertQuery = "INSERT INTO person (person_ticket) VALUES ('$save') WHERE person_id = $person_id";
-        //echo $insertQuery;
-        parent::insert($insertQuery);
+        $pdf->Output('D', 'boleto.pdf');
         
 
         
