@@ -372,6 +372,33 @@ Route::set('generatePDF', function(){
 
 });
 
+Route::set('sendTicket', function(){
+
+    //verifica los datos de las cookies
+    if(!verifyAuth())
+    {
+        Response::sendError('Not login', 401);
+        return;
+    }
+
+    //saca el metodo de la url
+    $request_method = $_SERVER['REQUEST_METHOD'];
+
+    //verifica si el metodo es "GET"
+    if($request_method == 'GET')
+    {
+       //verificamos si el parámetro se encuentra en la url 
+       if(!isset($_GET["person_id"]))
+       {
+           Response::sendError('Bad request', 400);
+           return;
+       }
+
+       Phpmail::sendTo($_GET);
+    }
+
+});
+
 Route::set('login', function() {
 
     $request_method = $_SERVER['REQUEST_METHOD'];
