@@ -32,18 +32,61 @@ class Person extends Controller{
     //devuelve el total de personas en todas las escuelas
     public static function totalPersons()
     {
-        $query = "SELECT count(*) FROM person INNER JOIN user ON person.person_id = user.user_person_id WHERE user.user_rol_id = 1";
+        $query = "SELECT SUM(IF(user_email='', 1, 0)) as total_user_sin_confirmar, SUM(IF(user_email != '', 1, 0)) as total_user_confirmados from user;";
         $resp = parent::select($query);
-        return $resp;
+        $json = array();
+        $json['type'] = 1;
+        $json['total_user_sin_confirmar'] = $resp[0][0];
+        $json['total_user_confirmados'] = $resp[0][1];
+        return $json;
     }
+
+    public static function totalPersonsPresea($data) {
+        $presea_id = $data['presea_id'];
+        $query = "SELECT  SUM(IF(user_email='',1,0)) as total_sin_confirmar, SUM(IF(user_email!='',1,0)) as total_user_confirmados from ((user INNER JOIN person ON user.user_person_id = person_id) INNER JOIN person_presea on person_presea.person_id = person.person_id) where person_presea.presea_id = $presea_id";
+        $resp = parent::select($query);
+        $json = array();
+        $json['type'] = 3;
+        $json['total_user_sin_confirmar'] = $resp[0][0];
+        $json['total_user_confirmados'] = $resp[0][1];
+        return $json;
+    }
+
     
     //devuelve el total de personas en una escuela en específico
     public static function totalPersonsSchool($data)
     {
-        $school = $data["school"];
-        $query = "SELECT count(*) FROM((person INNER JOIN user ON person.person_id = user.user_person_id) INNER JOIN person_school ON person_school.person_id = person.person_id ) WHERE user.user_rol_id = 1 && person_school.school_id = $school";
+        $school_id = $data["school_id"];
+        $query = "SELECT  SUM(IF(user_email='',1,0)) as total_sin_confirmar, SUM(IF(user_email!='',1,0)) as total_user_confirmados from (((user INNER JOIN person on person_id = user_id) INNER JOIN person_school ON person_school.person_id = person.person_id) INNER JOIN school ON person_school.school_id = school.school_id) where school.school_id = $school_id";
         $resp = parent::select($query);
-        return $resp;
+        $json = array();
+        $json['type'] = 2;
+        $json['total_user_sin_confirmar'] = $resp[0][0];
+        $json['total_user_confirmados'] = $resp[0][1];
+        return $json;
+    }
+
+    public static function totalPersonsRol($data) {
+        $rol_id = $data['rol_id'];
+        $query = "SELECT  SUM(IF(user_email='',1,0)) as total_sin_confirmar, SUM(IF(user_email!='',1,0)) as total_user_confirmados FROM user WHERE user_rol_id = $rol_id";
+        $resp = parent::select($query);
+        $json = array();
+        $json['type'] = 4;
+        $json['total_user_sin_confirmar'] = $resp[0][0];
+        $json['total_user_confirmados'] = $resp[0][1];
+        return $json;
+    }
+
+    public static function totalPersonsRolPresea($data) {
+        $rol_id = $data['rol_id'];
+        $presea_id = $data['presea_id'];
+        $query = "SELECT  SUM(IF(user_email='',1,0)) as total_sin_confirmar, SUM(IF(user_email!='',1,0)) as total_user_confirmados FROM ((user INNER JOIN person ON person_id = user_person_id) INNER JOIN person_presea ON person_presea.person_id = person.person_id) WHERE user.user_rol_id =$rol_id AND person_presea.presea_id = $presea_id";
+        $resp = parent::select($query);
+        $json = array();
+        $json['type'] = 5;
+        $json['total_user_sin_confirmar'] = $resp[0][0];
+        $json['total_user_confirmados'] = $resp[0][1];
+        return $json;
     }
     
     public static function searchPerson($data)

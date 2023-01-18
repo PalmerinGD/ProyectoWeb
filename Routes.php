@@ -59,23 +59,6 @@ Route::set('rol/user', function(){
     //verifica si el metodo es "GET"
     if($request_method == 'GET')
     {
-        /*
-        //
-        if(!isset($_GET["start"]) || !isset($_GET["limit"]) || !isset($_GET["rol"]))
-        {
-            Response::sendError('Bad request', 400);
-            return;
-        }
-
-        $data = array(
-            "start"=>$_GET["start"],
-            "limit"=>$_GET["limit"],
-            "rol"=>$_GET["rol"]
-        );
-
-        $res = Rol::getRange($data);
-        Response::sendOk($res);
-        */
         $data = array (
             "person_name" => $_GET['nombre'],
             "person_surnamep" => $_GET['surnamep'],
@@ -283,21 +266,49 @@ Route::set('total/persons', function(){
     //verifica si el metodo es "GET"
     if($request_method == 'GET')
     {
-        //
-        if(!isset($_GET["count"]))
-        {
-            Response::sendError('Bad request', 400);
-            return;
-        }
 
         //?count=total
         $data = array(
-            "count"=>$_GET["count"]
+            "school_id" => $_GET["school_id"],
+            "presea_id" => $_GET["presea_id"],
+            "rol_id" => $_GET["rol_id"]
         );
 
-        $type = $data["count"];
+        
 
-        Persons::totalPersons();
+        if($data['school_id'] == 0) {
+            if($data['rol_id'] == 0) {
+                if($data['presea_id'] == 0) {
+                    // Cuando se quiere seleccionar todas las escuelas, roles y preseas
+                    $res = Person::totalPersons();
+                }
+                else {
+                    // Cuando se quiere seleccionar todas las escuelas y roles de una presea.
+                    $res = Person::totalPersonsPresea($data);
+                }
+            }
+            else {
+                if($data['presea_id'] == 0) {
+                    // Cuando se quiere seleccionar todas las escuelas, y preseas de un rol
+                    $res = Person::totalPersonsRol($data);
+                }
+                else {
+                    // Cuando se quiere seleccionar todas las escuelas de un rol y de una presea
+                    $res = Person::totalPersonsRolPresea($data);
+                }
+            }
+        }
+        else {
+            if($data['rol_id'] == 0) {
+                if($data['presea_id'] == 0) {
+                    $res = Person::totalPersonsSchool($data);
+                }
+            }
+        }
+
+        Response::sendOk($res);
+
+        //Persons::totalPersons();
 
     }
 });
@@ -335,15 +346,6 @@ Route::set('schools/users', function(){
 
 });
 
-Route::set('pdf', function() {
-    $file = 'file.PDF';
-        header('Content-type: application/pdf');
-        header('Content-Disposition: attachment; filename="'. basename($file) . '"');
-        header('Content-Length: ' . filesize($file));
-        readfile($file);
-    
-    //generacion de archivo pdf
-});
 Route::set('generatePDF', function(){
 
     //verifica los datos de las cookies

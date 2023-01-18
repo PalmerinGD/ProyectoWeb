@@ -116,3 +116,5 @@ function Search({schools, token}) {
 }
 
 export default Search
+
+// Cuando rol de usuario es igual a estudiante y escuela igual a todas

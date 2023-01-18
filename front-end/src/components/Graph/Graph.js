@@ -10,30 +10,67 @@ import Schools from '../School/Schools'
 import Rol from '../Rol/Rol'
 import Presea from '../Presea/Presea'
 import { GoGraph, GoNote } from "react-icons/go";
+import axios from 'axios'
 const options = {
   title: "Alumnos por escuela"
 }
 
 function Graph({schools}) {
-  const [school, setSchool] = useState('')
-  const [rol, setRol] = useState('')
-  const [presea, setPresea] = useState('')
+  const [school, setSchool] = useState(0)
+  const [rol, setRol] = useState(0)
+  const [presea, setPresea] = useState(0)
   const [datos, setDatos] = useState([])
+  const [chartType, setChartType] = useState('')
 
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(school === '0') {
-    }
-    else {
-      setDatos([
-        ["Escuela", "Total de confirmados"],
-        ["CECyT #3", 4],
-        ["ESCOM", 10],
-        ["UPICSSA", 30],
-        ["Otros", 10]
-      ])
-    }
+    axios.get(`/total/persons?school_id=${school}&rol_id=${rol}&presea_id=${presea}`)
+    .then(res => {
+      console.log(res);
+      const data = res.data.result;
+      if(data.type === 1) {
+        // Mostrar solamente confirmados y no confirmados
+        setChartType('Bar')
+        setDatos([
+          ['Estatus', 'Total'],
+          ['Confirmados', Number(data.total_user_confirmados)],
+          ['No confirmados', Number(data.total_user_sin_confirmar)]
+        ])
+      }
+      else if(data.type === 2) {
+        setChartType('PieChart')
+        setDatos([
+          [`Estatus`, 'Total'],
+          ['Confirmados', Number(data.total_user_confirmados)],
+          ['No confirmados', Number(data.total_user_sin_confirmar)]
+        ])
+      }
+      else if(data.type === 3) {
+        setChartType('PieChart')
+        setDatos([
+          [`Estatus`, 'Total'],
+          ['Confirmados', Number(data.total_user_confirmados)],
+          ['No confirmados', Number(data.total_user_sin_confirmar)]
+        ])
+      }
+      else if(data.type === 4) {
+        setChartType('Bar')
+        setDatos([
+          [`Estatus`, 'Total'],
+          ['Confirmados', Number(data.total_user_confirmados)],
+          ['No confirmados', Number(data.total_user_sin_confirmar)]
+        ])
+      }
+      else if(data.type === 5) {
+        setChartType('Bar')
+        setDatos([
+          [`Estatus`, 'Total'],
+          ['Confirmados', Number(data.total_user_confirmados)],
+          ['No confirmados', Number(data.total_user_sin_confirmar)]
+        ])
+      }
+    })
   }
 
   return (
@@ -57,6 +94,8 @@ function Graph({schools}) {
               <Col md={12} lg={6}>
                 <Rol setRol={setRol}/> 
               </Col>
+            </Row>
+            <Row>
               <Col>
                 <Presea setPresea={setPresea}/>
               </Col>
@@ -72,7 +111,7 @@ function Graph({schools}) {
       </Row>
       <Row className='mt-2'>
         <Col>
-          {datos.length > 0 ? <Chart chartType='PieChart' data={datos} options={options} width="100%" height="400px"/> : null}
+          {datos.length > 0 ? <Chart chartType={chartType} data={datos} options={options} width="100%" height="400px"/> : null}
         </Col>
       </Row>
     </Container>
