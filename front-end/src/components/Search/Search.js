@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Container from 'react-bootstrap/esm/Container'
 import Row from 'react-bootstrap/esm/Row'
 import Col from 'react-bootstrap/esm/Col'
@@ -27,6 +27,12 @@ function Search({schools, token}) {
     const [start, setStart] = useState(0)
 
     const [entity, setEntity] = useState(null)
+    
+    useEffect(() => {
+        if(schools.length >= 1)
+            setSchool(schools[0].school_id)
+    }, [])
+
     const handleSearch = (e) => {
         e.preventDefault()
         console.log(school);

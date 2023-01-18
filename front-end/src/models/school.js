@@ -8,3 +8,13 @@ export async function getAll() {
         return -1;
     }
 }
+
+export async function getByUserId(id) {
+    try {
+        const res = await axios.get(`/schools?user_id=${id}`);
+        return res;
+    }
+    catch {
+        return -1;
+    }
+}

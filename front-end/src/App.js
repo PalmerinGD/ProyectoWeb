@@ -15,7 +15,7 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import Main from "./components/Main/Main";
 import Footer from './components/Footer/Footer'
 import Navbar from './components/Navbar/Navbar'
-import Header from './components/Header/Header'
+import Busqueda from "./components/Busqueda/Busqueda";
 
 import React from 'react'
 import Container from 'react-bootstrap/Container'
@@ -30,7 +30,7 @@ function App() {
   useEffect(()=>{
     if(Cookies.get('user_name') && Cookies.get('user_id') && Cookies.get('user_rol')) {
       setToken({
-        user_id: Number(Cookies.get('user_id')),
+        user_id: Cookies.get('user_id'),
         user_name: Cookies.get('user_name'),
         user_rol: Cookies.get('user_rol')
       })
@@ -44,6 +44,7 @@ function App() {
     }
   }, [])
  
+  console.log(token);
   return (
     <BrowserRouter>
     <Container fluid className='overflow-hidden p-0'>
@@ -55,12 +56,15 @@ function App() {
         <Row>
             <Col>
               <Routes>
-                <Route path="/" element={token ? <Navigate replace to="/dashboard"/> : <Main />}/>
-                <Route element={<ProtectedRoute token={token}/>}>
+                <Route path="/" element={token !== null? <Navigate replace to={token.user_rol === "0" ? "dashboard" : token.user_rol === "1" ? "datos" : "busqueda"}/> : <Main />}/>
+                <Route element={<ProtectedRoute admin token={token}/>}>
                   <Route path="/dashboard/" element={<Dashboard token={token}/>} />
                 </Route>
-                <Route element={<ProtectedRoute token={token}/>}>
+                <Route element={<ProtectedRoute user token={token}/>}>
                   <Route path="/datos/" element={<Datos token={token}/>}/>
+                </Route>
+                <Route element={<ProtectedRoute profesor token={token}/>}>
+                  <Route path="/busqueda/" element={<Busqueda token={token}/>}/>
                 </Route>
               </Routes>
             </Col>

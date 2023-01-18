@@ -28,5 +28,10 @@ class User extends Controller{
         $resp = parent::update($query);
         echo $resp;
     }
+
+    public static function deleteById($data) {
+        $user_id = $data['user_id'];
+        $query = "";
+    }
 }
 ?>

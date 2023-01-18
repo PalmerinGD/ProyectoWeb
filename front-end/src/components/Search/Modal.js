@@ -9,8 +9,20 @@ import { GoPerson, GoTrashcan, GoCheck } from "react-icons/go";
 import { useState } from 'react'
 
 import './modal.css';
+import axios from 'axios'
 
 function Modal({ entity, setEntity }) {
+
+  const handleEmail = () => {
+    axios.get(`/sendTicket?person_id=${entity.user_id}`)
+    .then(res => {
+      console.log(res);
+    })
+  }
+  const handleDelete = () => {
+    axios.delete(`/user?user_id=${entity.user_id}`)
+    .then(res => console.log(res))
+  }
 
   console.log(entity);
   if(entity === null) return null
@@ -60,9 +72,8 @@ function Modal({ entity, setEntity }) {
         </Container> 
       </ModalB.Body>
       <ModalB.Footer>
-        <Button disabled={entity.user_email === ''}> Mandar Correo </Button>
-        <Button>Actualizar <GoCheck /></Button>
-        <Button variant="danger">Eliminar <GoTrashcan /></Button>
+        <Button disabled={entity.user_email === ''} onClick={() => handleEmail()}> Mandar Correo </Button>
+        <Button variant="danger" onClick={() => handleDelete()}>Eliminar <GoTrashcan /></Button>
       </ModalB.Footer>
     </ModalB>
   )

@@ -7,6 +7,7 @@ require_once('./controllers/Persons.php');
 require_once('./controllers/User.php');
 require_once('./controllers/School.php');
 require_once('./controllers/Pdfgen.php');
+require_once('./controllers/Phpmailer.php');
 
 // Establece las rutas que vamos a ocupar.
 
@@ -144,7 +145,10 @@ Route::set('schools', function(){
 
     //verifica si el metodo es "GET"
     if($request_method == 'GET') {
-        $res = School::getAll();
+        if(isset($_GET['user_id'])) {
+            $res = School::getByUserId($_GET);
+        }
+        else $res = School::getAll();
         Response::sendOk($res);
     }
 });
@@ -207,6 +211,12 @@ Route::set('user', function() {
         $data = json_decode(file_get_contents('php://input'), true);
         Person::updatePersonById($data);
         User::addEmail($data);
+    }
+    else if($request_method == 'DELETE') {
+        $data = array (
+            "user_id" => $_GET['user_id']
+        );
+        User::deleteById($data);
     }
 });
 

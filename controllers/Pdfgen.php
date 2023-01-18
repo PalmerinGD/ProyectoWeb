@@ -123,7 +123,7 @@ INNER JOIN presea on person_presea.presea_id = presea.presea_id) INNER JOIN pers
             $pdf->MultiCell(0,10, "Dirección: ".$dir. " ". $dir1. " ". $dir2);  
         }
         
-        $pdf->Output();
+        $pdf->Output('D', 'boleto.pdf');
 
     }  
     
