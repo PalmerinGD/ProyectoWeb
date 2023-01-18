@@ -4,70 +4,9 @@ import Row from 'react-bootstrap/esm/Row'
 import Col from 'react-bootstrap/esm/Col'
 import Table from 'react-bootstrap/Table'
 
-const registersx = [
-  {
-    person_name: 'Diego',
-    person_surnamep: 'Palmerin',
-    person_surnamem: 'Garcia'
-  },
-  {
-    person_name: 'Diego',
-    person_surnamep: 'Palmerin',
-    person_surnamem: 'Garcia'
-  },
-  {
-    person_name: 'Diego',
-    person_surnamep: 'Palmerin',
-    person_surnamem: 'Garcia'
-  },
-  {
-    person_name: 'Diego',
-    person_surnamep: 'Palmerin',
-    person_surnamem: 'Garcia'
-  },
-  {
-    person_name: 'Diego',
-    person_surnamep: 'Palmerin',
-    person_surnamem: 'Garcia'
-  },
-  {
-    person_name: 'Diego',
-    person_surnamep: 'Palmerin',
-    person_surnamem: 'Garcia'
-  },
-  {
-    person_name: 'Diego',
-    person_surnamep: 'Palmerin',
-    person_surnamem: 'Garcia'
-  },
-  {
-    person_name: 'Diego',
-    person_surnamep: 'Palmerin',
-    person_surnamem: 'Garcia'
-  },
-  {
-    person_name: 'Diego',
-    person_surnamep: 'Palmerin',
-    person_surnamem: 'Garcia'
-  },
-  {
-    person_name: 'Diego',
-    person_surnamep: 'Palmerin',
-    person_surnamem: 'Garcia'
-  },
-  {
-    person_name: 'Diego',
-    person_surnamep: 'Palmerin',
-    person_surnamem: 'Garcia'
-  },
-  {
-    person_name: 'Diego',
-    person_surnamep: 'Palmerin',
-    person_surnamem: 'Garcia'
-  },
-]
-function Registers({registers, start, setEntity}) {
+import Modal from './Modal'
 
+function Registers({registers, start, setEntity}) {
 
   return (
     <Container fluid className='bg-light'>
@@ -82,8 +21,8 @@ function Registers({registers, start, setEntity}) {
               </tr>
             </thead>
             <tbody>
-              {registersx.map((r, i) => {
-                if (i >= start)
+              {registers.map((r, i) => {
+                if (i >= start && i < start + 10)
                   return (
                     <tr key={i} onClick={() => setEntity(r)}>
                       <td>{r.person_name}</td>

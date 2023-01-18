@@ -55,9 +55,9 @@ function App() {
         <Row>
             <Col>
               <Routes>
-                <Route path="/" element={token ? <Navigate replace to="/datos"/> : <Main />}/>
+                <Route path="/" element={token ? <Navigate replace to="/dashboard"/> : <Main />}/>
                 <Route element={<ProtectedRoute token={token}/>}>
-                  <Route path="/dashboard/" element={<Dashboard/>} />
+                  <Route path="/dashboard/" element={<Dashboard token={token}/>} />
                 </Route>
                 <Route element={<ProtectedRoute token={token}/>}>
                   <Route path="/datos/" element={<Datos token={token}/>}/>

@@ -76,8 +76,39 @@ Route::set('rol/user', function(){
         $res = Rol::getRange($data);
         Response::sendOk($res);
         */
+        $data = array (
+            "person_name" => $_GET['nombre'],
+            "person_surnamep" => $_GET['surnamep'],
+            "person_surnamem" => $_GET['surnamem'],
+            "school_id" => $_GET['school_id'],
+            "rol_id" => $_GET['rol_id']
+        );
+        if($data['school_id'] == 0) {
+                if($data['person_name'] == '' && $data['person_surnamep'] == '' && $data['person_surnamem'] == '') {
+                    $res = Rol::getAllUsers();
+                }
+                else $res = Rol::getAllUsersLike($data);
+        }
+        else {
+            if($data['rol_id'] == 0) {
 
-        $res = Rol::getAllUsers();
+                if($data['person_name'] == '' && $data['person_surnamep'] == '' && $data['person_surnamem'] == '') {
+                    $res = Rol::getAllUsersFromSchool($data);
+                }
+                else {
+
+                    $res = Rol::getAllUsersFromSchoolLike($data);
+                }
+            }
+            else {
+                if($data['person_name'] == '' && $data['person_surnamep'] == '' && $data['person_surnamem'] == '') {
+                    $res = Rol::getUsersFromSchool($data);
+                }
+                else {
+                    $res = Rol::getUsersFromSchoolLike($data);
+                }
+            }
+        }
         Response::sendOk($res);
     }
 

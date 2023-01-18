@@ -64,7 +64,7 @@ function Graph({schools}) {
             <Row className='mt-2'>
               <Col className='d-flex justify-content-end'>
                 <Button type="submit" className='m-2'>Generar <GoNote/></Button>
-                <Button className='m-2' variant="secondary">Limpiar</Button>
+                <Button className='m-2' variant="secondary" onClick={() => setDatos([])}>Limpiar</Button>
               </Col>
             </Row>
           </Form>

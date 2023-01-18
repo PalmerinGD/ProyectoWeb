@@ -6,12 +6,17 @@ import Col from 'react-bootstrap/esm/Col'
 import Button from 'react-bootstrap/esm/Button'
 import { GoPerson, GoTrashcan, GoCheck } from "react-icons/go";
 
+import { useState } from 'react'
+
+import './modal.css';
+
 function Modal({ entity, setEntity }) {
 
+  console.log(entity);
   if(entity === null) return null
   return (
-    <ModalB size="lg" show={true} onHide={() => setEntity(null)} aria-labelledby="modal-lg">
-      <ModalB.Header id="modal-lg">
+    <ModalB size="lg" show={true} onHide={() => setEntity(null)} aria-labelledby="modal-lg" centered>
+      <ModalB.Header id="modal-lg" className='justify-content-center' closeButton>
         <h4>
           Informacion del usuario{' '}<GoPerson/>
         </h4>
@@ -20,16 +25,45 @@ function Modal({ entity, setEntity }) {
         <Container>
           <Row>
             <Col>
+            Nombre: {entity.person_name} 
             </Col>   
+            <Col>
+            Id usuario: {entity.user_id} 
+            </Col>
           </Row>   
           <Row>
             <Col>
-              <Button>Actualizar <GoCheck/></Button>
-              <Button variant="danger">Eliminar <GoTrashcan/></Button>
-            </Col>   
-          </Row> 
+            Apellido Paterno: {entity.person_surnamep}
+            </Col>
+            <Col>
+            Apellido Materno: {entity.person_surnamem} 
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+            Rol: {entity.user_rol_id === "0" ? 'admin' : entity.user_rol_id === '1' ? 'estudiante' : 'profesor'} 
+            </Col>
+            <Col>
+            Discapacidad: {entity.person_discapacity === '1' ? 'Si' : entity.person_discapacity === '0' ? 'No' : 'Sin confirmar'} 
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+            Presea: {entity.presea_name} 
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+            Escuela: {entity.school_name} 
+            </Col>
+          </Row>
         </Container> 
       </ModalB.Body>
+      <ModalB.Footer>
+        <Button disabled={entity.user_email === ''}> Mandar Correo </Button>
+        <Button>Actualizar <GoCheck /></Button>
+        <Button variant="danger">Eliminar <GoTrashcan /></Button>
+      </ModalB.Footer>
     </ModalB>
   )
 }
